@@ -1,0 +1,33 @@
+package org.javaguru.doc.generator.core.messagebroker;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import org.javaguru.doc.generator.core.api.dto.AgreementDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+
+@Component
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+public class ProposalGenerationQueueListener {
+
+    private static final Logger logger = LoggerFactory.getLogger(ProposalGenerationQueueListener.class);
+
+    private final JsonStringToAgreementDtoConverter agreementDtoConverter;
+    private final ProposalGenerator proposalGenerator;
+
+    @RabbitListener(queues = RabbitMQConfig.QUEUE_PROPOSAL_GENERATION)
+    public void receiveMessage(String message) throws IOException {
+        try {
+            logger.info(message);
+            AgreementDTO agreementDTO = agreementDtoConverter.convert(message);
+            proposalGenerator.generateProposalAndStoreToFile(agreementDTO);
+        } catch (Exception e) {
+            logger.error("FAIL to process message: ", e);
+        }
+    }
+
+}
