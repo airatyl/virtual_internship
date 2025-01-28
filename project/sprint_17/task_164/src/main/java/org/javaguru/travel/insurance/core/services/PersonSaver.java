@@ -1,0 +1,35 @@
+package org.javaguru.travel.insurance.core.services;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import org.javaguru.travel.insurance.core.api.dto.PersonDTO;
+import org.javaguru.travel.insurance.core.domain.PersonEntity;
+import org.javaguru.travel.insurance.core.repositories.PersonEntityRepository;
+import org.springframework.stereotype.Component;
+
+import java.util.Optional;
+
+@Component
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+class PersonSaver {
+
+    private final PersonEntityRepository repository;
+
+    PersonEntity savePerson(PersonDTO personDTO) {
+        Optional<PersonEntity> personOpt = repository.findBy(
+                personDTO.getPersonFirstName(),
+                personDTO.getPersonLastName(),
+                personDTO.getPersonCode());
+        if (personOpt.isPresent()) {
+            return personOpt.get();
+        } else {
+            PersonEntity person = new PersonEntity();
+            person.setFirstName(personDTO.getPersonFirstName());
+            person.setLastName(personDTO.getPersonLastName());
+            person.setPersonCode(personDTO.getPersonCode());
+            person.setBirthDate(personDTO.getPersonBirthDate());
+            return repository.save(person);
+        }
+    }
+
+}
