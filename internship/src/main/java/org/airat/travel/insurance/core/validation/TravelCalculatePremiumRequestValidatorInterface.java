@@ -3,8 +3,9 @@ package org.airat.travel.insurance.core.validation;
 import org.airat.travel.insurance.dto.TravelCalculatePremiumRequest;
 import org.airat.travel.insurance.dto.ValidationError;
 
-import java.util.Optional;
+import java.util.List;
 
-interface RequestFieldValidation {
-    Optional <ValidationError> validateField(TravelCalculatePremiumRequest request);
+public interface TravelCalculatePremiumRequestValidatorInterface {
+
+    public List<ValidationError> validate(TravelCalculatePremiumRequest request);
 }

@@ -2,10 +2,11 @@ package org.airat.travel.insurance.core.validation;
 
 import org.airat.travel.insurance.dto.TravelCalculatePremiumRequest;
 import org.airat.travel.insurance.dto.ValidationError;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
-
-public class AgreementDateFromBeforeAgreementDateToValidation implements RequestFieldValidation {
+@Component
+class AgreementDateFromBeforeAgreementDateToValidation implements RequestFieldValidation {
 
 
     @Override

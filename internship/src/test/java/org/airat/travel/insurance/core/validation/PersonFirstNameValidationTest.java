@@ -1,48 +1,42 @@
-package org.airat.travel.insurance.core;
+package org.airat.travel.insurance.core.validation;
 
-import org.airat.travel.insurance.core.validation.TravelCalculatePremiumRequestValidator;
 import org.airat.travel.insurance.dto.TravelCalculatePremiumRequest;
 import org.airat.travel.insurance.dto.ValidationError;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-class TravelCalculatePremiumRequestValidatorTest {
+class PersonFirstNameValidationTest {
 
-
-
-    private TravelCalculatePremiumRequestValidator requestValidator;
-
-    @BeforeEach
-    public void setup(){
-        requestValidator=new TravelCalculatePremiumRequestValidator();
-    }
+    PersonFirstNameValidation personFirstNameValidation = new PersonFirstNameValidation();
 
     @Test
     public void FirstNameIsNullValidate(){
         TravelCalculatePremiumRequest request= Mockito.mock(TravelCalculatePremiumRequest.class);
         Mockito.when(request.getPersonFirstName()).thenReturn(null);
-        List<ValidationError> errors = requestValidator.validate(request);
-        assertTrue(errors.contains(new ValidationError("personFirstName","Must not be empty!")));
+        Optional <ValidationError> errors = personFirstNameValidation.validateField(request);
+        assertTrue(errors.isPresent());
+        assertEquals(new ValidationError("personFirstName", "Must not be empty!"),errors.get());
     }
 
     @Test
     public void FirstNameIsEmptyValidate(){
         TravelCalculatePremiumRequest request= Mockito.mock(TravelCalculatePremiumRequest.class);
         Mockito.when(request.getPersonFirstName()).thenReturn("");
-        List<ValidationError> errors = requestValidator.validate(request);
-        assertTrue(errors.contains(new ValidationError("personFirstName","Must not be empty!")));
+        Optional <ValidationError> errors = personFirstNameValidation.validateField(request);
+        assertTrue(errors.isPresent());
+        assertEquals(new ValidationError("personFirstName", "Must not be empty!"),errors.get());
     }
 
     @Test
     public void FirstNameIsNotEmptyValidate(){
         TravelCalculatePremiumRequest request= Mockito.mock(TravelCalculatePremiumRequest.class);
         Mockito.when(request.getPersonFirstName()).thenReturn("Airat");
-        List<ValidationError> errors = requestValidator.validate(request);
+        Optional <ValidationError> errors = personFirstNameValidation.validateField(request);
         assertTrue(errors.isEmpty());
     }
+
 }

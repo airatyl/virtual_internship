@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class TravelCalculatePremiumServiceImplTest {
 
     @Mock
-    DateTimeService dateTimeService;
+    TravelPremiumUnderwriting underwriting;
     @Mock
     TravelCalculatePremiumRequestValidator requestValidator;
 
@@ -39,9 +39,7 @@ class TravelCalculatePremiumServiceImplTest {
     public void initRequestAndResponse(){
         request= new TravelCalculatePremiumRequest("Айрат","Bilyaletdinov",
                 LocalDate.of(2025, Month.JANUARY,20),LocalDate.of(2025, Month.JANUARY,29));
-        Mockito.when(dateTimeService.calculateDaysBetweenDates(Mockito.any(),Mockito.any())).thenReturn(8L);
 
-        response= service.calculatePremium(request);
     }
 
 
@@ -77,7 +75,7 @@ class TravelCalculatePremiumServiceImplTest {
 
     @Test
     public void responseFillingFirstName() {
-
+        response= service.calculatePremium(request);
         assertEquals(request.getPersonFirstName(),response.getPersonFirstName());
 
     }
@@ -85,28 +83,28 @@ class TravelCalculatePremiumServiceImplTest {
 
     @Test
     public void responseFillingLastName() {
-
-
+        response= service.calculatePremium(request);
         assertEquals(request.getPersonLastName(),response.getPersonLastName());
 
     }
 
     @Test
     public void responseFillingAgreementDateFrom() {
-
+        response= service.calculatePremium(request);
         assertEquals(request.getAgreementDateFrom(),response.getAgreementDateFrom());
 
     }
 
     @Test
     public void responseFillingAgreementDateTo() {
-
+        response= service.calculatePremium(request);
         assertEquals(request.getAgreementDateTo(),response.getAgreementDateTo());
 
     }
     @Test
     public void responseCalculateAgreementPrice() {
-
+        Mockito.when(underwriting.calculatePremium(Mockito.any())).thenReturn(new BigDecimal(8L));
+        response= service.calculatePremium(request);
         assertEquals(new BigDecimal(8),response.getAgreementPrice());
 
     }

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 @Component
-public class AgreementDateFromNotEmptyValidation implements RequestFieldValidation {
+class AgreementDateFromNotEmptyValidation implements RequestFieldValidation {
 
     @Override
     public Optional<ValidationError> validateField(TravelCalculatePremiumRequest request) {

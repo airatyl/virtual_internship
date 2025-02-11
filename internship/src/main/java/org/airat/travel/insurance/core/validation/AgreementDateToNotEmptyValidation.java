@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 @Component
-public class AgreementDateToNotEmptyValidation implements RequestFieldValidation{
+class AgreementDateToNotEmptyValidation implements RequestFieldValidation{
     @Override
     public Optional<ValidationError> validateField(TravelCalculatePremiumRequest request) {
-        return (request.getAgreementDateFrom() == null)
+        return (request.getAgreementDateTo() == null)
                 ? Optional.of(new ValidationError("agreementDateTo", "Must not be empty!"))
                 : Optional.empty();
     }

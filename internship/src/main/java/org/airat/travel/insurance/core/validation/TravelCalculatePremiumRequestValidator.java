@@ -9,22 +9,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class TravelCalculatePremiumRequestValidator {
+public class TravelCalculatePremiumRequestValidator implements TravelCalculatePremiumRequestValidatorInterface {
 
     private final List<RequestFieldValidation> requestFieldValidationList;
+
 
     @Autowired
     TravelCalculatePremiumRequestValidator(List<RequestFieldValidation> requestFieldValidationList) {
         this.requestFieldValidationList = requestFieldValidationList;
     }
 
+
     public List<ValidationError> validate(TravelCalculatePremiumRequest request) {
         List<ValidationError> errors = new ArrayList<>();
         requestFieldValidationList.forEach(validation -> validation.validateField(request).ifPresent(errors::add));
         return errors;
     }
-
-
 
 
 }
