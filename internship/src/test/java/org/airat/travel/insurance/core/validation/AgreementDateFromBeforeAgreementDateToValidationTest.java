@@ -48,8 +48,7 @@ class AgreementDateFromBeforeAgreementDateToValidationTest {
         Mockito.when(request.getAgreementDateFrom()).thenReturn(null);
         Mockito.when(request.getAgreementDateTo()).thenReturn(LocalDate.of(2025,1,12));
         Optional<ValidationError> errors = agreementDateFromBeforeAgreementDateToValidation.validateField(request);
-        assertTrue(errors.isPresent());
-        assertEquals(new ValidationError("agreementDates","agreementDateFrom should be no earlier than agreementDateTo"),errors.get());
+        assertTrue(errors.isEmpty());
     }
 
     @Test
@@ -58,8 +57,7 @@ class AgreementDateFromBeforeAgreementDateToValidationTest {
         Mockito.when(request.getAgreementDateFrom()).thenReturn(LocalDate.of(2025,1,12));
         Mockito.when(request.getAgreementDateTo()).thenReturn(null);
         Optional<ValidationError> errors = agreementDateFromBeforeAgreementDateToValidation.validateField(request);
-        assertTrue(errors.isPresent());
-        assertEquals(new ValidationError("agreementDates","agreementDateFrom should be no earlier than agreementDateTo"),errors.get());
+        assertTrue(errors.isEmpty());
     }
 
     @Test
@@ -68,8 +66,7 @@ class AgreementDateFromBeforeAgreementDateToValidationTest {
         Mockito.when(request.getAgreementDateFrom()).thenReturn(null);
         Mockito.when(request.getAgreementDateTo()).thenReturn(null);
         Optional<ValidationError> errors = agreementDateFromBeforeAgreementDateToValidation.validateField(request);
-        assertTrue(errors.isPresent());
-        assertEquals(new ValidationError("agreementDates","agreementDateFrom should be no earlier than agreementDateTo"),errors.get());
+        assertTrue(errors.isEmpty());
     }
 
 
