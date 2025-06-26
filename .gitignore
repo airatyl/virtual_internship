@@ -2,7 +2,7 @@
 *.class
 *.jar
 # without gradle-wrapper.jar our build will fail
-!gradle/wrapper/gradle-wrapper.jar
+!internship/gradle/wrapper/gradle-wrapper.jar
 
 #log specific
 *.log
@@ -31,3 +31,4 @@
 *.ipr
 /student_pavel_antonov/documentation/
 /student_pavel_antonov/___forExp/
+/internship/documentation/**
