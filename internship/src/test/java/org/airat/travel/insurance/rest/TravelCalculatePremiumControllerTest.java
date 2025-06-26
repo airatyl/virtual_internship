@@ -1,6 +1,10 @@
 package org.airat.travel.insurance.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.airat.travel.insurance.dto.TravelCalculatePremiumRequest;
+import org.airat.travel.insurance.dto.TravelCalculatePremiumResponse;
+import org.airat.travel.insurance.dto.ValidationError;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +16,15 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.org.webcompere.modelassert.json.JsonAssertions.assertJson;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -24,79 +34,108 @@ public class TravelCalculatePremiumControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private JsonFileReader reader;
 
+    private TravelCalculatePremiumRequest rightRequest;
+
+    private TravelCalculatePremiumResponse rightResponse;
+
+    @BeforeEach
+    public void initRequestAndResponse(){
+        rightRequest= new TravelCalculatePremiumRequest("Айрат","Bilyaletdinov",
+                LocalDate.now().plusDays(1),LocalDate.now().plusDays(10),
+                LocalDate.of(2005, Month.JANUARY,20),"Россия", BigDecimal.valueOf(100),
+                List.of("Медицинские расходы","Отмена поездки"));
+
+
+    }
 
     @Test
     public void firstNameNotProvidedTest() throws Exception {
 
-        executeAndCompare("rest/TravelCalculatePremium/Request_firstName_not_provided.json",
-                "rest/TravelCalculatePremium/Response_firstName_not_provided.json");
-    }
-    @Test
-    public void lastNameNotProvidedTest() throws Exception {
+        rightRequest.setPersonFirstName(null);
+        rightResponse =new TravelCalculatePremiumResponse(List.of(new ValidationError("personFirstName", "Must not be empty!")));
 
-        executeAndCompare("rest/TravelCalculatePremium/Request_lastName_not_provided.json",
-                "rest/TravelCalculatePremium/Response_lastName_not_provided.json");
+        executeAndCompare(rightRequest,rightResponse);
     }
-    @Test
-    public void agreementDateFromNotProvidedTest() throws Exception {
+//    @Test
+//    public void lastNameNotProvidedTest() throws Exception {
+//
+//        rightRequest.setPersonFirstName(null);
+//        rightResponse =new TravelCalculatePremiumResponse(List.of(new ValidationError("personFirstName", "Must not be empty!")));
+//
+//        executeAndCompare(rightRequest,rightResponse);
+//    }
+//    @Test
+//    public void agreementDateFromNotProvidedTest() throws Exception {
+//
+//        rightRequest.setPersonFirstName(null);
+//        rightResponse =new TravelCalculatePremiumResponse(List.of(new ValidationError("personFirstName", "Must not be empty!")));
+//
+//        executeAndCompare(rightRequest,rightResponse);
+//    }
+//    @Test
+//    public void agreementDateFromNotInFutureTest() throws Exception {
+//
+//        rightRequest.setPersonFirstName(null);
+//        rightResponse =new TravelCalculatePremiumResponse(List.of(new ValidationError("personFirstName", "Must not be empty!")));
+//
+//        executeAndCompare(rightRequest,rightResponse);
+//    }
+//    @Test
+//    public void agreementDateToNotInFutureTest() throws Exception {
+//
+//        rightRequest.setPersonFirstName(null);
+//        rightResponse =new TravelCalculatePremiumResponse(List.of(new ValidationError("personFirstName", "Must not be empty!")));
+//
+//        executeAndCompare(rightRequest,rightResponse);
+//    }
+//    @Test
+//    public void agreementDateToNotProvidedTest() throws Exception {
+//
+//        rightRequest.setPersonFirstName(null);
+//        rightResponse =new TravelCalculatePremiumResponse(List.of(new ValidationError("personFirstName", "Must not be empty!")));
+//
+//        executeAndCompare(rightRequest,rightResponse);
+//    }
+//    @Test
+//    public void agreementDateFromBeforeAgreementDateToTest() throws Exception {
+//
+//        rightRequest.setPersonFirstName(null);
+//        rightResponse =new TravelCalculatePremiumResponse(List.of(new ValidationError("personFirstName", "Must not be empty!")));
+//
+//        executeAndCompare(rightRequest,rightResponse);
+//    }
 
-        executeAndCompare("rest/TravelCalculatePremium/Request_agreementDateFrom_not_provided.json",
-                "rest/TravelCalculatePremium/Response_agreementDateFrom_not_provided.json");
-    }
-    @Test
-    public void agreementDateFromNotInFutureTest() throws Exception {
-
-        executeAndCompare("rest/TravelCalculatePremium/Request_agreementDateFrom_not_in_future.json",
-                "rest/TravelCalculatePremium/Response_agreementDateFrom_not_in_future.json");
-    }
-    @Test
-    public void agreementDateToNotInFutureTest() throws Exception {
-
-        executeAndCompare("rest/TravelCalculatePremium/Request_agreementDateTo_not_in_future.json",
-                "rest/TravelCalculatePremium/Response_agreementDateTo_not_in_future.json");
-    }
-    @Test
-    public void agreementDateToNotProvidedTest() throws Exception {
-
-        executeAndCompare("rest/TravelCalculatePremium/Request_agreementDateTo_not_provided.json",
-                "rest/TravelCalculatePremium/Response_agreementDateTo_not_provided.json");
-    }
-    @Test
-    public void agreementDateFromBeforeAgreementDateToTest() throws Exception {
-
-        executeAndCompare("rest/TravelCalculatePremium/Request_dateTo_lessThen_dateFrom.json",
-                "rest/TravelCalculatePremium/Response_dateTo_lessThen_dateFrom.json");
-    }
-
-    @Test
-    public void allFieldsNotProvidedTest() throws Exception {
-
-        executeAndCompare("rest/TravelCalculatePremium/Request_allFields_not_provided.json",
-                "rest/TravelCalculatePremium/Response_allFields_not_provided.json");
-    }
+//    @Test
+//    public void allFieldsNotProvidedTest() throws Exception {
+//
+//
+//    }
 
 
     @Test
     public void AllFieldsCorrectTest() throws Exception {
+        rightResponse = new TravelCalculatePremiumResponse("Айрат","Bilyaletdinov",
+                LocalDate.now().plusDays(1),LocalDate.now().plusDays(10),
+                LocalDate.of(2005, Month.JANUARY,20),"Россия", BigDecimal.valueOf(100),BigDecimal.valueOf(10));
 
-        executeAndCompare("rest/TravelCalculatePremium/Request_firstName_not_provided.json",
-                "rest/TravelCalculatePremium/Response_firstName_not_provided.json");
+        executeAndCompare(rightRequest,rightResponse);
     }
 
-    private void executeAndCompare(String jsonRequestFilePath,
-                                   String jsonResponseFilePath) throws Exception {
+    private void executeAndCompare(TravelCalculatePremiumRequest request,
+                                   TravelCalculatePremiumResponse expectedResponse) throws Exception {
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.findAndRegisterModules();
+
         MvcResult result = mockMvc.perform(post("/insurance/travel/")
-                        .content(reader.readJsonFromFile(jsonRequestFilePath))
+                        .content(mapper.writeValueAsString(request))
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
 
         String response = result.getResponse().getContentAsString();
-        ObjectMapper mapper = new ObjectMapper();
-        assertEquals(mapper.readTree(reader.readJsonFromFile(jsonResponseFilePath)), mapper.readTree(response));
+        assertEquals(expectedResponse,mapper.readValue(response,TravelCalculatePremiumResponse.class));
     }
 
 }

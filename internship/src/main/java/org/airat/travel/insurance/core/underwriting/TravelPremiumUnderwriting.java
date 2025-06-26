@@ -1,7 +1,8 @@
-package org.airat.travel.insurance.core;
+package org.airat.travel.insurance.core.underwriting;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.airat.travel.insurance.core.DateTimeService;
 import org.airat.travel.insurance.dto.TravelCalculatePremiumRequest;
 import org.springframework.stereotype.Component;
 

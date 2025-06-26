@@ -2,6 +2,7 @@ package org.airat.travel.insurance.core;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.airat.travel.insurance.core.underwriting.TravelPremiumUnderwriting;
 import org.airat.travel.insurance.core.validation.TravelCalculatePremiumRequestValidator;
 import org.airat.travel.insurance.dto.TravelCalculatePremiumRequest;
 import org.airat.travel.insurance.dto.TravelCalculatePremiumResponse;
@@ -21,6 +22,7 @@ class TravelCalculatePremiumServiceImpl implements TravelCalculatePremiumService
 
     @Override
     public TravelCalculatePremiumResponse calculatePremium(TravelCalculatePremiumRequest request) {
+
         List<ValidationError> errors = requestValidator.validate(request);
         if (errors.isEmpty()) {
             return fillResponse(request);
@@ -40,8 +42,11 @@ class TravelCalculatePremiumServiceImpl implements TravelCalculatePremiumService
         response.setPersonLastName(request.getPersonLastName());
         response.setAgreementDateFrom(request.getAgreementDateFrom());
         response.setAgreementDateTo(request.getAgreementDateTo());
+        response.setBirthDate(request.getBirthDate());
+        response.setCountry(request.getCountry());
+        response.setMedicalRiskLimitLevel(request.getMedicalRiskLimitLevel());
 
-        response.setAgreementPrice(premiumUnderwriting.calculatePremium(request));
+        response.setAgreementPremium(premiumUnderwriting.calculatePremium(request));
 
         return response;
     }

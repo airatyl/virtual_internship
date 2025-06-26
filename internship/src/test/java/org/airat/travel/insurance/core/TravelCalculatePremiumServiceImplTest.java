@@ -1,5 +1,6 @@
 package org.airat.travel.insurance.core;
 
+import org.airat.travel.insurance.core.underwriting.TravelPremiumUnderwriting;
 import org.airat.travel.insurance.core.validation.TravelCalculatePremiumRequestValidator;
 import org.airat.travel.insurance.dto.TravelCalculatePremiumRequest;
 import org.airat.travel.insurance.dto.TravelCalculatePremiumResponse;
@@ -67,7 +68,7 @@ class TravelCalculatePremiumServiceImplTest {
         assertNull(response.getPersonLastName());
         assertNull(response.getAgreementDateFrom());
         assertNull(response.getAgreementDateTo());
-        assertNull(response.getAgreementPrice());
+        assertNull(response.getAgreementPremium());
     }
 
 
@@ -105,7 +106,7 @@ class TravelCalculatePremiumServiceImplTest {
     public void responseCalculateAgreementPrice() {
         Mockito.when(underwriting.calculatePremium(Mockito.any())).thenReturn(new BigDecimal(8L));
         response= service.calculatePremium(request);
-        assertEquals(new BigDecimal(8),response.getAgreementPrice());
+        assertEquals(new BigDecimal(8),response.getAgreementPremium());
 
     }
 

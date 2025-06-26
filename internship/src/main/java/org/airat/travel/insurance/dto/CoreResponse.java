@@ -19,4 +19,10 @@ public class CoreResponse {
         return errors != null && !errors.isEmpty();
     }
 
+    @Override
+    public String toString() {
+        return "CoreResponse{" +
+                "errors=" + errors +
+                '}';
+    }
 }
