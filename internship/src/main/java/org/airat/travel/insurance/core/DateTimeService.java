@@ -9,6 +9,10 @@ import java.time.temporal.ChronoUnit;
 public class DateTimeService {
 
     public long calculateDaysBetweenDates(LocalDate date1, LocalDate date2){
-        return date1.until(date2, ChronoUnit.DAYS)+1;
+        return ChronoUnit.DAYS.between(date1,date2)+1;
+    }
+
+    public int calculateAge(LocalDate birthDate){
+        return birthDate.until(LocalDate.now()).getYears();
     }
 }

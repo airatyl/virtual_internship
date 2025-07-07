@@ -21,7 +21,7 @@ class RisksSelectedValidationTest {
         Mockito.when(request.getRisks()).thenReturn(null);
         Optional<ValidationError> errors = risksSelectedValidation.validateField(request);
         assertTrue(errors.isPresent());
-        assertEquals(new ValidationError("risks","должен быть выбран хотя бы один риск"),errors.get());
+        assertEquals(new ValidationError("risks","Должен быть выбран хотя бы один риск"),errors.get());
     }
 
     @Test
@@ -30,7 +30,7 @@ class RisksSelectedValidationTest {
         Mockito.when(request.getRisks()).thenReturn(List.of());
         Optional <ValidationError> errors = risksSelectedValidation.validateField(request);
         assertTrue(errors.isPresent());
-        assertEquals(new ValidationError("risks","должен быть выбран хотя бы один риск"),errors.get());
+        assertEquals(new ValidationError("risks","Должен быть выбран хотя бы один риск"),errors.get());
     }
 
     @Test

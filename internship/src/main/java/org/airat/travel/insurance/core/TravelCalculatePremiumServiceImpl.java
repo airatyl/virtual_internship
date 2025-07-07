@@ -4,11 +4,11 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.airat.travel.insurance.core.underwriting.TravelPremiumUnderwriting;
 import org.airat.travel.insurance.core.validation.TravelCalculatePremiumRequestValidator;
-import org.airat.travel.insurance.dto.TravelCalculatePremiumRequest;
-import org.airat.travel.insurance.dto.TravelCalculatePremiumResponse;
-import org.airat.travel.insurance.dto.ValidationError;
+import org.airat.travel.insurance.dto.*;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -45,8 +45,11 @@ class TravelCalculatePremiumServiceImpl implements TravelCalculatePremiumService
         response.setBirthDate(request.getBirthDate());
         response.setCountry(request.getCountry());
         response.setMedicalRiskLimitLevel(request.getMedicalRiskLimitLevel());
-
-        response.setAgreementPremium(premiumUnderwriting.calculatePremium(request));
+        TravelPremiumCalculationResult premiums = premiumUnderwriting.calculatePremiumForSelectedRisks(request);
+        System.out.println(request.getCountry());
+        System.out.println(response.getCountry());
+        response.setAgreementPremium(premiums.totalPremium());
+        response.setRiskPremiums(premiums.riskPremiums());
 
         return response;
     }

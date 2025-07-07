@@ -42,14 +42,14 @@
 
 
 
-    <logger name="org.airat.travel.insurance.rest.TravelCalculatePremiumRequestLogger" level="info" additivity="true">
+    <logger name="org.airat.travel.insurance.rest.v2.TravelCalculatePremiumRequestLoggerV2" level="info" additivity="true">
         <appender-ref ref="REQUEST_RESPONSE_FILE_APPENDER" />
     </logger>
 
-    <logger name="org.airat.travel.insurance.rest.TravelCalculatePremiumResponseLogger" level="info" additivity="true">
+    <logger name="org.airat.travel.insurance.rest.v2.TravelCalculatePremiumResponseLoggerV2" level="info" additivity="true">
         <appender-ref ref="REQUEST_RESPONSE_FILE_APPENDER" />
     </logger>
-    <logger name="org.airat.travel.insurance.rest.TravelCalculatePremiumRequestExecutionTimeLogger" level="info" additivity="true">
+    <logger name="org.airat.travel.insurance.rest.v2.TravelCalculatePremiumRequestExecutionTimeLoggerV2" level="info" additivity="true">
         <appender-ref ref="FILE_APPENDER" />
     </logger>
 

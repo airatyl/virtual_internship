@@ -28,7 +28,7 @@ class AgreementDateToInFutureValidationTest {
         Mockito.when(request.getAgreementDateTo()).thenReturn(LocalDate.of(2024, 9, 9));
         Optional<ValidationError> error = validation.validateField(request);
         assertTrue(error.isPresent());
-        assertEquals(new ValidationError("agreementDateTo", "agreementDateTo not be in future"), error.get());
+        assertEquals(new ValidationError("agreementDateTo", "Дата окончания должна быть в будущем"), error.get());
     }
 
     @Test

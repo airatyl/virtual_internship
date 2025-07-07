@@ -2,9 +2,7 @@ package org.airat.travel.insurance.core;
 
 import org.airat.travel.insurance.core.underwriting.TravelPremiumUnderwriting;
 import org.airat.travel.insurance.core.validation.TravelCalculatePremiumRequestValidator;
-import org.airat.travel.insurance.dto.TravelCalculatePremiumRequest;
-import org.airat.travel.insurance.dto.TravelCalculatePremiumResponse;
-import org.airat.travel.insurance.dto.ValidationError;
+import org.airat.travel.insurance.dto.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.util.Pair;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -39,7 +38,9 @@ class TravelCalculatePremiumServiceImplTest {
     @BeforeEach
     public void initRequestAndResponse(){
         request= new TravelCalculatePremiumRequest("Айрат","Bilyaletdinov",
-                LocalDate.of(2025, Month.JANUARY,20),LocalDate.of(2025, Month.JANUARY,29));
+                LocalDate.now().plusDays(1),LocalDate.now().plusDays(10),
+                LocalDate.of(2005, Month.JANUARY,20),"Россия", BigDecimal.valueOf(100),
+                List.of("Медицинские расходы","Отмена поездки"));
 
     }
 
@@ -76,6 +77,8 @@ class TravelCalculatePremiumServiceImplTest {
 
     @Test
     public void responseFillingFirstName() {
+        Mockito.when(underwriting.calculatePremiumForSelectedRisks(request)).
+                thenReturn(new TravelPremiumCalculationResult(new BigDecimal(8L),List.of(new RiskPremium())));
         response= service.calculatePremium(request);
         assertEquals(request.getPersonFirstName(),response.getPersonFirstName());
 
@@ -84,6 +87,8 @@ class TravelCalculatePremiumServiceImplTest {
 
     @Test
     public void responseFillingLastName() {
+        Mockito.when(underwriting.calculatePremiumForSelectedRisks(request)).
+                thenReturn(new TravelPremiumCalculationResult(new BigDecimal(8L),List.of(new RiskPremium())));
         response= service.calculatePremium(request);
         assertEquals(request.getPersonLastName(),response.getPersonLastName());
 
@@ -91,6 +96,8 @@ class TravelCalculatePremiumServiceImplTest {
 
     @Test
     public void responseFillingAgreementDateFrom() {
+        Mockito.when(underwriting.calculatePremiumForSelectedRisks(request)).
+                thenReturn(new TravelPremiumCalculationResult(new BigDecimal(8L),List.of(new RiskPremium())));
         response= service.calculatePremium(request);
         assertEquals(request.getAgreementDateFrom(),response.getAgreementDateFrom());
 
@@ -98,13 +105,16 @@ class TravelCalculatePremiumServiceImplTest {
 
     @Test
     public void responseFillingAgreementDateTo() {
+        Mockito.when(underwriting.calculatePremiumForSelectedRisks(request)).
+                thenReturn(new TravelPremiumCalculationResult(new BigDecimal(8L),List.of(new RiskPremium())));
         response= service.calculatePremium(request);
         assertEquals(request.getAgreementDateTo(),response.getAgreementDateTo());
 
     }
     @Test
     public void responseCalculateAgreementPrice() {
-        Mockito.when(underwriting.calculatePremium(Mockito.any())).thenReturn(new BigDecimal(8L));
+        Mockito.when(underwriting.calculatePremiumForSelectedRisks(Mockito.any())).
+                thenReturn(new TravelPremiumCalculationResult(new BigDecimal(8L),List.of(new RiskPremium())));
         response= service.calculatePremium(request);
         assertEquals(new BigDecimal(8),response.getAgreementPremium());
 

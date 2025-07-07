@@ -14,7 +14,7 @@ public class AgreementDateFromInFutureValidation implements RequestFieldValidati
     public Optional<ValidationError> validateField(TravelCalculatePremiumRequest request) {
         return (request.getAgreementDateFrom()!=null &&
                 LocalDate.now().until(request.getAgreementDateFrom()).getDays() < 0)
-                ? Optional.of(new ValidationError("agreementDateFrom","agreementDateFrom not be in future"))
+                ? Optional.of(new ValidationError("agreementDateFrom","Дата начала должна быть в будущем"))
                 : Optional.empty();
     }
 }

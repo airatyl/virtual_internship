@@ -11,7 +11,7 @@ class PersonFirstNameValidation implements RequestFieldValidation {
     @Override
     public Optional<ValidationError> validateField(TravelCalculatePremiumRequest request) {
         return (request.getPersonFirstName() == null || request.getPersonFirstName().isEmpty())
-                ? Optional.of(new ValidationError("personFirstName", "Must not be empty!"))
+                ? Optional.of(new ValidationError("personFirstName", "Должно быть заполнено"))
                 : Optional.empty();
     }
 

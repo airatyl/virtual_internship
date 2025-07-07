@@ -5,47 +5,61 @@ import org.airat.travel.insurance.dto.ValidationError;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AgeMustBeIfMedicalRiskSelectedValidationTest {
-
-    AgeMustBeIfMedicalRiskSelectedValidation validation =new AgeMustBeIfMedicalRiskSelectedValidation();
+class LimitMustBeIfMedicalRiskLimitEnabledValidationTest {
+    LimitMustBeIfMedicalRiskLimitEnabledValidation validation =new LimitMustBeIfMedicalRiskLimitEnabledValidation();
 
     @Test
-    public void RiskSelectedAgeSelected(){
+    public void EnabledIsFalse(){
+        validation.setEnabled(false);
         TravelCalculatePremiumRequest request= Mockito.mock(TravelCalculatePremiumRequest.class);
         Mockito.when(request.getRisks()).thenReturn(List.of("Медицинские расходы"));
-        Mockito.when(request.getBirthDate()).thenReturn(LocalDate.now());
+        Mockito.when(request.getMedicalRiskLimitLevel()).thenReturn(BigDecimal.valueOf(12));
+        Optional<ValidationError> errors = validation.validateField(request);
+        assertTrue(errors.isEmpty());
+    }
+
+    @Test
+    public void EnabledIsTrueRiskSelectedLimitSelected(){
+        validation.setEnabled(true);
+        TravelCalculatePremiumRequest request= Mockito.mock(TravelCalculatePremiumRequest.class);
+        Mockito.when(request.getRisks()).thenReturn(List.of("Медицинские расходы"));
+        Mockito.when(request.getMedicalRiskLimitLevel()).thenReturn(BigDecimal.valueOf(12));
         Optional<ValidationError> errors = validation.validateField(request);
         assertTrue(errors.isEmpty());
     }
     @Test
-    public void RiskSelectedAgeNotSelected(){
+    public void EnabledIsTrueRiskSelectedLimitNotSelected(){
+        validation.setEnabled(true);
         TravelCalculatePremiumRequest request= Mockito.mock(TravelCalculatePremiumRequest.class);
         Mockito.when(request.getRisks()).thenReturn(List.of("Медицинские расходы"));
-        Mockito.when(request.getBirthDate()).thenReturn(null);
+        Mockito.when(request.getMedicalRiskLimitLevel()).thenReturn(null);
         Optional<ValidationError> errors = validation.validateField(request);
         assertTrue(errors.isPresent());
-        assertEquals(new ValidationError("birthDate","Должен быть заполнен"),errors.get());
+        assertEquals(new ValidationError("medicalRiskLimitLevel","Должен быть заполнен"),errors.get());
     }
     @Test
-    public void RiskNotSelectedAgeSelected(){
+    public void EnabledIsTrueRiskNotSelectedLimitSelected(){
+        validation.setEnabled(true);
         TravelCalculatePremiumRequest request= Mockito.mock(TravelCalculatePremiumRequest.class);
         Mockito.when(request.getRisks()).thenReturn(List.of());
-        Mockito.when(request.getBirthDate()).thenReturn(LocalDate.now());
+        Mockito.when(request.getMedicalRiskLimitLevel()).thenReturn(BigDecimal.valueOf(12));
         Optional<ValidationError> errors = validation.validateField(request);
         assertTrue(errors.isEmpty());
     }
     @Test
-    public void RiskNotSelectedAgeNotSelected(){
+    public void EnabledIsTrueRiskNotSelectedLimitNotSelected(){
+        validation.setEnabled(true);
         TravelCalculatePremiumRequest request= Mockito.mock(TravelCalculatePremiumRequest.class);
         Mockito.when(request.getRisks()).thenReturn(List.of());
-        Mockito.when(request.getBirthDate()).thenReturn(null);
+        Mockito.when(request.getMedicalRiskLimitLevel()).thenReturn(null);
         Optional<ValidationError> errors = validation.validateField(request);
         assertTrue(errors.isEmpty());
     }
+
 }

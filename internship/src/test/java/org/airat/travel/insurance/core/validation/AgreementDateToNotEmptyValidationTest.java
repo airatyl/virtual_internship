@@ -20,7 +20,7 @@ class AgreementDateToNotEmptyValidationTest {
         Mockito.when(request.getAgreementDateTo()).thenReturn(null);
         Optional<ValidationError> errors = agreementDateToNotEmptyValidation.validateField(request);
         assertTrue(errors.isPresent());
-        assertEquals(new ValidationError("agreementDateTo", "Must not be empty!"),errors.get());
+        assertEquals(new ValidationError("agreementDateTo", "Должно быть заполнено"),errors.get());
     }
 
     @Test

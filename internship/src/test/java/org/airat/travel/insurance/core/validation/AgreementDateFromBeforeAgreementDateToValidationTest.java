@@ -39,7 +39,7 @@ class AgreementDateFromBeforeAgreementDateToValidationTest {
         Mockito.when(request.getAgreementDateTo()).thenReturn(LocalDate.of(2025,1,10));
         Optional<ValidationError> errors = agreementDateFromBeforeAgreementDateToValidation.validateField(request);
         assertTrue(errors.isPresent());
-        assertEquals(new ValidationError("agreementDates","agreementDateFrom should be no earlier than agreementDateTo"),errors.get());
+        assertEquals(new ValidationError("agreementDates","Дата начала должна быть раньше даты окончания"),errors.get());
     }
 
     @Test

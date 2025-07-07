@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @RestController
-@RequestMapping("/insurance/travel")
+@RequestMapping("/insurance/travel/rest")
 public class TravelCalculatePremiumController {
 
 	private final TravelCalculatePremiumRequestExecutionTimeLogger timeLogger;

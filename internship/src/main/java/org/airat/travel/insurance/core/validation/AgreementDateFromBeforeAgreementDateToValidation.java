@@ -13,7 +13,7 @@ class AgreementDateFromBeforeAgreementDateToValidation implements RequestFieldVa
     public Optional<ValidationError> validateField(TravelCalculatePremiumRequest request) {
         return (request.getAgreementDateFrom()!=null && request.getAgreementDateTo()!=null &&
                 request.getAgreementDateFrom().until(request.getAgreementDateTo()).getDays() < 0)
-                ? Optional.of(new ValidationError("agreementDates","agreementDateFrom should be no earlier than agreementDateTo"))
+                ? Optional.of(new ValidationError("agreementDates","Дата начала должна быть раньше даты окончания"))
                 : Optional.empty();
     }
 }

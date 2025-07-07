@@ -11,7 +11,7 @@ public class RisksSelectedValidation implements RequestFieldValidation{
     @Override
     public Optional<ValidationError> validateField(TravelCalculatePremiumRequest request) {
         return (request.getRisks() ==null || request.getRisks().isEmpty())
-                ? Optional.of(new ValidationError("risks","должен быть выбран хотя бы один риск"))
+                ? Optional.of(new ValidationError("risks","Должен быть выбран хотя бы один риск"))
                 : Optional.empty();
     }
 }

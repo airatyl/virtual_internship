@@ -1,0 +1,10 @@
+{
+  "personFirstName" : "Vasja",
+  "personLastName" : "Pupkin",
+  "birthDate" : "25.05.2006",
+  "agreementDateFrom" : "25.05.2026",
+  "agreementDateTo" : "28.05.2026",
+  "country" : "Россия",
+  "medicalRiskLimitLevel" : 100,
+  "risks":["Медицинские расходы","Отмена поездки"]
+}

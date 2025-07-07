@@ -19,7 +19,7 @@ class PersonLastNameValidationTest {
         Mockito.when(request.getPersonLastName()).thenReturn(null);
         Optional<ValidationError> errors = personLastNameValidation.validateField(request);
         assertTrue(errors.isPresent());
-        assertEquals(new ValidationError("personLastName", "Must not be empty!"),errors.get());
+        assertEquals(new ValidationError("personLastName", "Должно быть заполнено"),errors.get());
     }
 
     @Test
@@ -28,7 +28,7 @@ class PersonLastNameValidationTest {
         Mockito.when(request.getPersonLastName()).thenReturn("");
         Optional <ValidationError> errors = personLastNameValidation.validateField(request);
         assertTrue(errors.isPresent());
-        assertEquals(new ValidationError("personLastName", "Must not be empty!"),errors.get());
+        assertEquals(new ValidationError("personLastName", "Должно быть заполнено"),errors.get());
     }
 
     @Test

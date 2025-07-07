@@ -11,7 +11,7 @@ class AgreementDateFromNotEmptyValidation implements RequestFieldValidation {
     @Override
     public Optional<ValidationError> validateField(TravelCalculatePremiumRequest request) {
         return (request.getAgreementDateFrom() == null)
-                ? Optional.of(new ValidationError("agreementDateFrom", "Must not be empty!"))
+                ? Optional.of(new ValidationError("agreementDateFrom", "Должно быть заполнено"))
                 : Optional.empty();
     }
 }

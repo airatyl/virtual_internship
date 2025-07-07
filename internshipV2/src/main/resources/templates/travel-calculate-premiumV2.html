@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Insurance Premium Calculator V2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="date"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .checkbox-group {
+            margin-top: 10px;
+        }
+        .checkbox-item {
+            margin-bottom: 5px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .date-input::after {
+            content: "(dd.mm.yyyy)";
+            color: #777;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        #results {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            display: none;
+        }
+        .error {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .success {
+            color: #27ae60;
+        }
+        .risk-premium {
+            margin-top: 10px;
+            padding: 8px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+        }
+        .person-card {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: white;
+            position: relative;
+        }
+        .remove-person {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .add-person-btn {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .person-result {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: #eee;
+            margin-right: 5px;
+            border-radius: 4px 4px 0 0;
+        }
+        .tab.active {
+            background-color: #3498db;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Travel Insurance Premium Calculator V2</h1>
+
+    <div id="premiumForm">
+        <div class="form-group date-input">
+            <label for="agreementDateFrom">Agreement Date From:</label>
+            <input type="date" id="agreementDateFrom" name="agreementDateFrom" >
+        </div>
+
+        <div class="form-group date-input">
+            <label for="agreementDateTo">Agreement Date To:</label>
+            <input type="date" id="agreementDateTo" name="agreementDateTo">
+        </div>
+
+        <div class="form-group">
+            <label for="country">Country:</label>
+            <select id="country" name="country">
+                <option value="">-- Select Country --</option>
+                <option value="Россия">Россия</option>
+                <option value="Латвия">Латвия</option>
+                <option value="Литва">Литва</option>
+                <option value="Франция">Франция</option>
+                <option value="Китай">Китай</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Risks:</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <label for="risk1">Медицинские расходы</label>
+                    <input type="checkbox" id="risk1" name="risks" value="Медицинские расходы">
+
+                </div>
+                <div class="checkbox-item">
+                    <label for="risk2">Отмена поездки</label>
+                    <input type="checkbox" id="risk2" name="risks" value="Отмена поездки">
+
+                </div>
+            </div>
+        </div>
+
+        <h2>People</h2>
+        <div id="peopleContainer">
+            <!-- People will be added here dynamically -->
+        </div>
+
+        <button type="button" id="addPersonBtn" class="add-person-btn">+ Add Person</button>
+
+        <button id="send-btn">Calculate Premium</button>
+    </div>
+
+    <div id="results">
+        <h2>Calculation Results</h2>
+        <div class="tabs">
+            <div class="tab active" data-tab="summary">Summary</div>
+            <div class="tab" data-tab="details">Details</div>
+        </div>
+
+        <div id="responseContent">
+            <div id="summaryTab" class="tab-content">
+                <!-- Summary information will be shown here -->
+            </div>
+            <div id="detailsTab" class="tab-content" style="display:none;">
+                <!-- Detailed information will be shown here -->
+            </div>
+        </div>
+        <div id="errorContent" class="error"></div>
+    </div>
+</div>
+
+<script>
+    // Person counter for unique IDs
+    let personCounter = 0;
+
+    // Initialize with one person
+    document.addEventListener('DOMContentLoaded', function() {
+        addPerson();
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.style.display = 'none';
+                });
+
+                const tabName = this.getAttribute('data-tab');
+                document.getElementById(`${tabName}Tab`).style.display = 'block';
+            });
+        });
+    });
+
+    // Add person form
+    document.getElementById('addPersonBtn').addEventListener('click', addPerson);
+
+    function addPerson() {
+        const personId = `person_${personCounter++}`;
+        const personCard = document.createElement('div');
+        personCard.className = 'person-card';
+        personCard.id = personId;
+
+        personCard.innerHTML = `
+                <button class="remove-person" onclick="removePerson('${personId}')">×</button>
+                <div class="form-group">
+                    <label for="${personId}_firstName">First Name:</label>
+                    <input type="text" id="${personId}_firstName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="${personId}_lastName">Last Name:</label>
+                    <input type="text" id="${personId}_lastName" required>
+                </div>
+
+                <div class="form-group date-input">
+                    <label for="${personId}_birthDate">Birth Date:</label>
+                    <input type="date" id="${personId}_birthDate">
+                </div>
+
+                <div class="form-group">
+                    <label for="${personId}_medicalRiskLimitLevel">Medical Risk Limit Level:</label>
+                    <select id="${personId}_medicalRiskLimitLevel">
+                <option value="">-- Select Limit --</option>
+                <option value="10000">0 - 100 000</option>
+                <option value="125000">100 001 - 150 000</option>
+                <option value="170000">150 001 - 200 000</option>
+                    </select>
+                </div>
+            `;
+
+        document.getElementById('peopleContainer').appendChild(personCard);
+    }
+
+    function removePerson(personId) {
+        document.getElementById(personId).remove();
+    }
+
+    // Form submission
+    document.getElementById('send-btn').addEventListener('click', async function(event) {
+        event.preventDefault();
+
+        // Clear previous results
+        document.getElementById('results').style.display = 'none';
+        document.getElementById('summaryTab').innerHTML = '';
+        document.getElementById('detailsTab').innerHTML = '';
+        document.getElementById('errorContent').innerHTML = '';
+
+        // Prepare form data according to TravelCalculatePremiumRequestV2
+        const formData = {
+            agreementDateFrom: formatDate(document.getElementById('agreementDateFrom')),
+            agreementDateTo: formatDate(document.getElementById('agreementDateTo')),
+            country: document.getElementById('country').value,
+            risks: Array.from(document.querySelectorAll('input[name="risks"]:checked')).map(el => el.value),
+            people: []
+        };
+
+        // Collect data for each person
+        document.querySelectorAll('.person-card').forEach(personCard => {
+            const personId = personCard.id;
+            formData.people.push({
+                personFirstName: document.getElementById(`${personId}_firstName`).value,
+                personLastName: document.getElementById(`${personId}_lastName`).value,
+                birthDate: formatDate(document.getElementById(`${personId}_birthDate`)),
+                medicalRiskLimitLevel: document.getElementById(`${personId}_medicalRiskLimitLevel`).value
+            });
+        });
+
+        // Format date as dd.MM.yyyy
+        function formatDate(dateInput) {
+            if (!dateInput || !dateInput.value) return null;
+
+            const date = new Date(dateInput.value);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+
+            return `${day}.${month}.${year}`;
+        }
+
+        try {
+            // Send request to server
+            const response = await fetch('http://localhost:8080/insurance/travel/web/v2', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+
+            // Handle response
+            if (data.errors && data.errors.length > 0) {
+                // Show validation errors
+                document.getElementById('errorContent').innerHTML =
+                    '<h3 class="error">Validation Errors:</h3><ul>' +
+                    data.errors.map(error => `<li>${error.field}: ${error.message}</li>`).join('') +
+                    '</ul>';
+            } else {
+                // Show successful results
+                displayResults(data);
+            }
+
+            document.getElementById('results').style.display = 'block';
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('errorContent').innerHTML =
+                `<p class="error">An error occurred: ${error.message}</p>`;
+            document.getElementById('results').style.display = 'block';
+        }
+    });
+
+    function displayResults(response) {
+        const summaryTab = document.getElementById('summaryTab');
+        const detailsTab = document.getElementById('detailsTab');
+
+        // Summary information
+        let summaryHtml = `
+                <div class="premium-summary">
+                    <h3>Agreement Summary</h3>
+                    <p><strong>Period:</strong> ${response.agreementDateFrom} - ${response.agreementDateTo}</p>
+                    <p><strong>Country:</strong> ${response.country || 'Not specified'}</p>
+                    <p><strong>Total Premium:</strong> ${formatNumber(response.agreementPremium)}</p>
+                </div>
+                <h3>People (${response.people.length})</h3>
+            `;
+
+        // Detailed information
+        let detailsHtml = `
+                <div class="premium-summary">
+                    <h3>Agreement Details</h3>
+                    <p><strong>From:</strong> ${response.agreementDateFrom}</p>
+                    <p><strong>To:</strong> ${response.agreementDateTo}</p>
+                    <p><strong>Country:</strong> ${response.country || 'Not specified'}</p>
+                    <p><strong>Total Premium:</strong> ${formatNumber(response.agreementPremium)}</p>
+                </div>
+                <h3>People Details</h3>
+            `;
+
+        // Process each person
+        response.people.forEach((person, index) => {
+            const personNumber = index + 1;
+
+            // Summary info for each person
+            summaryHtml += `
+                    <div class="person-result">
+                        <p><strong>Person ${personNumber}:</strong> ${person.personFirstName} ${person.personLastName}</p>
+                        <p><strong>Premium:</strong> ${formatNumber(person.result?.totalPremium)}</p>
+                    </div>
+                `;
+
+            // Detailed info for each person
+            detailsHtml += `
+                    <div class="person-card">
+                        <h4>Person ${personNumber}: ${person.personFirstName} ${person.personLastName}</h4>
+                        ${person.birthDate ? `<p><strong>Birth Date:</strong> ${person.birthDate}</p>` : ''}
+                        ${person.medicalRiskLimitLevel ? `<p><strong>Medical Limit:</strong> ${formatNumber(person.medicalRiskLimitLevel)}</p>` : ''}
+                        <p><strong>Premium:</strong> ${formatNumber(person.result?.totalPremium)}</p>
+                `;
+
+            // Risk premiums for each person
+            if (person.result?.riskPremiums && person.result.riskPremiums.length > 0) {
+                detailsHtml += '<h5>Risk Premiums:</h5>';
+                person.result.riskPremiums.forEach(risk => {
+                    detailsHtml += `
+                            <div class="risk-premium">
+                                <p><strong>${risk.risk}:</strong> ${formatNumber(risk.premium)}</p>
+                                ${risk.description ? `<p><em>${risk.description}</em></p>` : ''}
+                            </div>
+                        `;
+                });
+            }
+
+            detailsHtml += '</div>';
+        });
+
+        summaryTab.innerHTML = summaryHtml;
+        detailsTab.innerHTML = detailsHtml;
+    }
+
+    function formatNumber(value) {
+        // Format numbers with thousand separators
+        return value ? Number(value).toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }) : '0.00';
+    }
+
+    // Make removePerson function available globally
+    window.removePerson = removePerson;
+</script>
+</body>
+</html>
