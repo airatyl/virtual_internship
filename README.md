@@ -11,7 +11,7 @@
 - SQL, PostqreSQL, H2, JDBC, ORM, JPA, Hibernate, Liquibase
 - JUnit, Mockito
 - Lombok, Immutable Objects
-- Logging, metrics
+- Logging
 - JAR, WAR, Java Web Server, Apache Tomcat
 # Веб-страница приложения
 <img width="666" height="760" alt="image" src="https://github.com/user-attachments/assets/2e6ca4a8-3d01-44e6-b725-6a89f4bbe1be" />
