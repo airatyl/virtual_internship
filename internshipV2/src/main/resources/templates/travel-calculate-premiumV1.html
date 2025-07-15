@@ -64,14 +64,6 @@
         .date-input {
             position: relative;
         }
-        .date-input::after {
-            content: "(dd.mm.yyyy)";
-            position: absolute;
-            right: 10px;
-            top: 35px;
-            color: #777;
-            font-size: 12px;
-        }
     </style>
 </head>
 <body>
@@ -87,6 +79,12 @@
             <label for="personLastName">Last Name:</label>
             <input type="text" id="personLastName" name="personLastName">
         </div>
+
+        <div class="form-group">
+            <label for="personCode">Person code:</label>
+            <input type="text" id="personCode" name="personCode">
+        </div>
+
 
         <div class="form-group date-input">
             <label for="agreementDateFrom">Agreement Date From:</label>
@@ -162,6 +160,7 @@
         const formData = {
             personFirstName: document.getElementById('personFirstName').value,
             personLastName: document.getElementById('personLastName').value,
+            personCode: document.getElementById('personCode').value,
             agreementDateFrom: formatDate(document.getElementById('agreementDateFrom')),
             agreementDateTo: formatDate(document.getElementById('agreementDateTo')),
             birthDate: formatDate(document.getElementById('birthDate')),
@@ -222,6 +221,7 @@
         let html = `
                 <div class="success">
                     <p><strong>Person:</strong> ${response.personFirstName} ${response.personLastName}</p>
+                    <p><strong>Person code:</strong> ${response.personCode}</p>
                     <p><strong>Agreement Period:</strong> ${response.agreementDateFrom} to ${response.agreementDateTo}</p>
                     ${response.birthDate ? `<p><strong>Birth Date:</strong> ${response.birthDate}</p>` : ''}
                     ${response.country ? `<p><strong>Country:</strong> ${response.country}</p>` : ''}

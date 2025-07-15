@@ -3,7 +3,7 @@ package org.airat.travel.insurance.core.underwriting;
 import lombok.Getter;
 import org.airat.travel.insurance.core.underwriting.calculators.TravelRiskCalculator;
 import org.airat.travel.insurance.dto.RiskPremium;
-import org.airat.travel.insurance.dto.v2.Person;
+import org.airat.travel.insurance.dto.v2.PersonDTO;
 import org.airat.travel.insurance.dto.v2.TravelCalculatePremiumRequestV2;
 import org.airat.travel.insurance.dto.TravelPremiumCalculationResult;
 import org.springframework.stereotype.Component;
@@ -25,7 +25,7 @@ public class TravelPremiumUnderwriting {
         riskCalculators.forEach(risk-> riskCalculatorsHashMap.put(risk.getRisk(),risk));
     }
 
-    public TravelPremiumCalculationResult calculatePremiumForSelectedRisks(TravelCalculatePremiumRequestV2 request, Person person){
+    public TravelPremiumCalculationResult calculatePremiumForSelectedRisks(TravelCalculatePremiumRequestV2 request, PersonDTO person){
         List<RiskPremium> answer = new ArrayList<>();
         final BigDecimal[] summ = {BigDecimal.ZERO};
         request.getRisks().forEach(risk->{

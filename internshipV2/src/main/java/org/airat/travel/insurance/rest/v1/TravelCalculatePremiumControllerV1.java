@@ -9,10 +9,7 @@ import org.airat.travel.insurance.dto.v1.TravelCalculatePremiumResponseV1;
 import org.airat.travel.insurance.dto.v2.TravelCalculatePremiumRequestV2;
 import org.airat.travel.insurance.dto.v2.TravelCalculatePremiumResponseV2;
 import org.springframework.util.StopWatch;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @RestController
@@ -40,5 +37,6 @@ public class TravelCalculatePremiumControllerV1 {
 		responseLogger.log(responseV1);
 		return responseV1;
 	}
+
 
 }

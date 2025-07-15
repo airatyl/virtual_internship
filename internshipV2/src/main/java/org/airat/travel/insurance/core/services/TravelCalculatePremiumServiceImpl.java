@@ -8,10 +8,12 @@ import org.airat.travel.insurance.dto.*;
 import org.airat.travel.insurance.dto.v2.TravelCalculatePremiumRequestV2;
 import org.airat.travel.insurance.dto.v2.TravelCalculatePremiumResponseV2;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+@Transactional
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @Component
 class TravelCalculatePremiumServiceImpl implements TravelCalculatePremiumService {
@@ -19,6 +21,7 @@ class TravelCalculatePremiumServiceImpl implements TravelCalculatePremiumService
 
     private final TravelPremiumUnderwriting premiumUnderwriting;
     private final TravelCalculatePremiumRequestValidator requestValidator;
+    private final AgreementsEntityService agreementsEntityService;
 
 
     @Override
@@ -26,7 +29,9 @@ class TravelCalculatePremiumServiceImpl implements TravelCalculatePremiumService
 
         List<ValidationError> errors = requestValidator.validate(request);
         if (errors.isEmpty()) {
-            return fillResponse(request);
+            TravelCalculatePremiumResponseV2 result = fillResponse(request);
+
+            return result;
         }
         else {
             return fillResponse(errors);
@@ -49,9 +54,13 @@ class TravelCalculatePremiumServiceImpl implements TravelCalculatePremiumService
         });
         response.setPeople(request.getPeople());
         response.setAgreementPremium(totalPremium[0]);
+        response.setUuid(agreementsEntityService.saveAll(response,request.getRisks()).getUuid());
+
 
         return response;
     }
+
+
 
 
 }

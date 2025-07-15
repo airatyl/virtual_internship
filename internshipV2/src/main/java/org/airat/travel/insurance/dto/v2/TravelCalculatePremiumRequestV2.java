@@ -3,7 +3,6 @@ package org.airat.travel.insurance.dto.v2;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class TravelCalculatePremiumRequestV2 {
     @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate agreementDateTo;
 
-    private List<Person> people;
+    private List<PersonDTO> people;
 
     private String country;
 

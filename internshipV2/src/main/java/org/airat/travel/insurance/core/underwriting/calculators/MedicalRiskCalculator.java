@@ -6,7 +6,7 @@ import org.airat.travel.insurance.core.services.DateTimeService;
 import org.airat.travel.insurance.core.repositories.AgeCoefficientRepository;
 import org.airat.travel.insurance.core.repositories.CountryRepository;
 import org.airat.travel.insurance.core.repositories.InsuranceLimitCoefficientRepository;
-import org.airat.travel.insurance.dto.v2.Person;
+import org.airat.travel.insurance.dto.v2.PersonDTO;
 import org.airat.travel.insurance.dto.v2.TravelCalculatePremiumRequestV2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -33,7 +33,7 @@ public class MedicalRiskCalculator implements TravelRiskCalculator{
 //    premium = CountryDefaultDayPremium * DayCount * AgeCoefficient * InsuranceLimitCoefficient
 
     @Override
-    public BigDecimal calculatePremium(TravelCalculatePremiumRequestV2 request, Person person) {
+    public BigDecimal calculatePremium(TravelCalculatePremiumRequestV2 request, PersonDTO person) {
         BigDecimal countryDefaultDayPremium = BigDecimal.valueOf( countryRepository.findByTitle(request.getCountry()).getDaypremium());
         BigDecimal dayCount = BigDecimal.valueOf(dateTimeService.calculateDaysBetweenDates(request.getAgreementDateFrom(),request.getAgreementDateTo()));
         BigDecimal ageCoefficient = (medicalRiskAgeCoefEnabled)

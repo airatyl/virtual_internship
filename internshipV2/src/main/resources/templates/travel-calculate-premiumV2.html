@@ -60,12 +60,6 @@
         button:hover {
             background-color: #2980b9;
         }
-        .date-input::after {
-            content: "(dd.mm.yyyy)";
-            color: #777;
-            font-size: 12px;
-            margin-left: 5px;
-        }
         #results {
             margin-top: 20px;
             padding: 15px;
@@ -252,6 +246,12 @@
                     <input type="text" id="${personId}_lastName" required>
                 </div>
 
+                <div class="form-group">
+                    <label for="${personId}_code">Person code:</label>
+                    <input type="text" id="${personId}_code" required>
+                </div>
+
+
                 <div class="form-group date-input">
                     <label for="${personId}_birthDate">Birth Date:</label>
                     <input type="date" id="${personId}_birthDate">
@@ -300,6 +300,7 @@
             formData.people.push({
                 personFirstName: document.getElementById(`${personId}_firstName`).value,
                 personLastName: document.getElementById(`${personId}_lastName`).value,
+                personCode: document.getElementById(`${personId}_code`).value,
                 birthDate: formatDate(document.getElementById(`${personId}_birthDate`)),
                 medicalRiskLimitLevel: document.getElementById(`${personId}_medicalRiskLimitLevel`).value
             });

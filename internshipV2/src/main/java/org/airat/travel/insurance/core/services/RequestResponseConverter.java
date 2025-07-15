@@ -2,10 +2,9 @@ package org.airat.travel.insurance.core.services;
 
 import org.airat.travel.insurance.dto.v1.TravelCalculatePremiumRequestV1;
 import org.airat.travel.insurance.dto.v1.TravelCalculatePremiumResponseV1;
-import org.airat.travel.insurance.dto.v2.Person;
+import org.airat.travel.insurance.dto.v2.PersonDTO;
 import org.airat.travel.insurance.dto.v2.TravelCalculatePremiumRequestV2;
 import org.airat.travel.insurance.dto.v2.TravelCalculatePremiumResponseV2;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class RequestResponseConverter {
         requestV2.setAgreementDateTo(requestV1.getAgreementDateTo());
         requestV2.setCountry(requestV1.getCountry());
         requestV2.setRisks(requestV1.getRisks());
-        requestV2.setPeople(List.of(new Person(requestV1.getPersonFirstName(),requestV1.getPersonLastName(),requestV1.getBirthDate(),requestV1.getMedicalRiskLimitLevel())));
+        requestV2.setPeople(List.of(new PersonDTO(requestV1.getPersonFirstName(),requestV1.getPersonLastName(),requestV1.getPersonCode(),requestV1.getBirthDate(),requestV1.getMedicalRiskLimitLevel())));
         return requestV2;
     }
 
@@ -36,6 +35,7 @@ public class RequestResponseConverter {
         responseV1.setPersonFirstName(responseV2.getPeople().get(0).getPersonFirstName());
         responseV1.setPersonLastName(responseV2.getPeople().get(0).getPersonLastName());
         responseV1.setRiskPremiums(responseV2.getPeople().get(0).getResult().riskPremiums());
+        responseV1.setPersonCode(responseV2.getPeople().get(0).getPersonCode());
         responseV1.setErrors(responseV2.getErrors());
         return responseV1;
     }

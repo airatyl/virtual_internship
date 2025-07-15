@@ -1,7 +1,7 @@
 package org.airat.travel.insurance.core.validation.person;
 
 import org.airat.travel.insurance.dto.ValidationError;
-import org.airat.travel.insurance.dto.v2.Person;
+import org.airat.travel.insurance.dto.v2.PersonDTO;
 import org.airat.travel.insurance.dto.v2.TravelCalculatePremiumRequestV2;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -15,8 +15,8 @@ class PersonFirstNameValidationTest {
 
     PersonFirstNameValidation personFirstNameValidation = new PersonFirstNameValidation();
 
-    private final Person person1 =new Person();
-    private final Person person2 =new Person();
+    private final PersonDTO person1 =new PersonDTO();
+    private final PersonDTO person2 =new PersonDTO();
 
     @Test
     public void FirstNameOfOnePersonIsNullValidate(){

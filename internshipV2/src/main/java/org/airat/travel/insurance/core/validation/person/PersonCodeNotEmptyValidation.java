@@ -1,21 +1,20 @@
 package org.airat.travel.insurance.core.validation.person;
 
 import org.airat.travel.insurance.core.validation.RequestFieldValidation;
+import org.airat.travel.insurance.dto.ValidationError;
 import org.airat.travel.insurance.dto.v2.PersonDTO;
 import org.airat.travel.insurance.dto.v2.TravelCalculatePremiumRequestV2;
-import org.airat.travel.insurance.dto.ValidationError;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
-class PersonLastNameValidation implements RequestFieldValidation {
-
+public class PersonCodeNotEmptyValidation implements RequestFieldValidation {
     @Override
     public Optional<ValidationError> validateField(TravelCalculatePremiumRequestV2 request) {
         for (PersonDTO person : request.getPeople()) {
-            if (person.getPersonLastName() == null || person.getPersonLastName().isEmpty()) {
-                return Optional.of(new ValidationError("personLastName", "Должно быть заполнено"));
+            if (person.getPersonCode() == null || person.getPersonCode().isEmpty()) {
+                return Optional.of(new ValidationError("personCode", "Должен быть заполнен"));
             }
         }
         return Optional.empty();

@@ -6,10 +6,7 @@ import org.airat.travel.insurance.core.services.TravelCalculatePremiumService;
 import org.airat.travel.insurance.dto.v2.TravelCalculatePremiumRequestV2;
 import org.airat.travel.insurance.dto.v2.TravelCalculatePremiumResponseV2;
 import org.springframework.util.StopWatch;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @RestController
@@ -27,7 +24,6 @@ public class TravelCalculatePremiumControllerV2 {
 			consumes = "application/json",
 			produces = "application/json")
 	public TravelCalculatePremiumResponseV2 calculatePremium(@RequestBody TravelCalculatePremiumRequestV2 request) {
-		System.out.println(request);
 		StopWatch watch =new StopWatch();
 		watch.start();
 		requestLogger.log(request);

@@ -29,8 +29,7 @@ public class TravelInsuranceControllerV1 {
     public @ResponseBody TravelCalculatePremiumResponseV1 processForm(@RequestBody TravelCalculatePremiumRequestV1 requestV1) {
         TravelCalculatePremiumRequestV2 requestV2= RequestResponseConverter.convertRequestV1ToRequestV2(requestV1);
         TravelCalculatePremiumResponseV2 responseV2 =service.calculatePremium(requestV2);
-        TravelCalculatePremiumResponseV1 responseV1 = RequestResponseConverter.convertResponseV2ToResponseV1(responseV2);
-        return responseV1;
+        return RequestResponseConverter.convertResponseV2ToResponseV1(responseV2);
     }
 
 }

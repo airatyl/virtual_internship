@@ -30,8 +30,7 @@ public class TravelInsuranceControllerV2 {
 
     @PostMapping("/insurance/travel/web/v2")
     public @ResponseBody TravelCalculatePremiumResponseV2 processForm(@RequestBody TravelCalculatePremiumRequestV2 requestV2) {
-        TravelCalculatePremiumResponseV2 responseV2 =service.calculatePremium(requestV2);
-        return responseV2;
+        return service.calculatePremium(requestV2);
     }
 
 }

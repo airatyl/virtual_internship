@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.airat.travel.insurance.dto.RiskPremium;
 import org.airat.travel.insurance.dto.TravelPremiumCalculationResult;
 import org.airat.travel.insurance.dto.ValidationError;
-import org.airat.travel.insurance.dto.v1.TravelCalculatePremiumRequestV1;
-import org.airat.travel.insurance.dto.v1.TravelCalculatePremiumResponseV1;
-import org.airat.travel.insurance.dto.v2.Person;
+import org.airat.travel.insurance.dto.v2.PersonDTO;
 import org.airat.travel.insurance.dto.v2.TravelCalculatePremiumRequestV2;
 import org.airat.travel.insurance.dto.v2.TravelCalculatePremiumResponseV2;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,9 +45,9 @@ class TravelCalculatePremiumControllerV2Test {
     @BeforeEach
     public void initRequestAndResponse(){
         rightRequest= new TravelCalculatePremiumRequestV2(LocalDate.now().plusDays(1),LocalDate.now().plusDays(10),
-                List.of(new Person("Айрат","Bilyaletdinov",
+                List.of(new PersonDTO("Айрат","Bilyaletdinov",
                                 LocalDate.of(2005, Month.JANUARY,20),BigDecimal.valueOf(100)),
-                        new Person("sad","asd",LocalDate.of(2005, Month.JANUARY,20),BigDecimal.valueOf(100))),
+                        new PersonDTO("sad","asd",LocalDate.of(2005, Month.JANUARY,20),BigDecimal.valueOf(100))),
                 "Россия",List.of("Медицинские расходы","Отмена поездки"));
 
 
@@ -126,9 +124,9 @@ class TravelCalculatePremiumControllerV2Test {
     public void AllFieldsCorrectTest() throws Exception {
         rightResponse = new TravelCalculatePremiumResponseV2(LocalDate.now().plusDays(1),LocalDate.now().plusDays(10),
                 "Россия",BigDecimal.valueOf(12002),
-                List.of(new Person("Айрат","Bilyaletdinov",
+                List.of(new PersonDTO("Айрат","Bilyaletdinov",
                                 LocalDate.of(2005, Month.JANUARY,20),BigDecimal.valueOf(100),new TravelPremiumCalculationResult(BigDecimal.valueOf(6001),List.of(new RiskPremium("Медицинские расходы",BigDecimal.valueOf(6000)),new RiskPremium("Отмена поездки",BigDecimal.ONE)))),
-                        new Person("sad","asd",LocalDate.of(2005, Month.JANUARY,20),BigDecimal.valueOf(100),new TravelPremiumCalculationResult(BigDecimal.valueOf(6001),List.of(new RiskPremium("Медицинские расходы",BigDecimal.valueOf(6000)),new RiskPremium("Отмена поездки",BigDecimal.ONE))))));
+                        new PersonDTO("sad","asd",LocalDate.of(2005, Month.JANUARY,20),BigDecimal.valueOf(100),new TravelPremiumCalculationResult(BigDecimal.valueOf(6001),List.of(new RiskPremium("Медицинские расходы",BigDecimal.valueOf(6000)),new RiskPremium("Отмена поездки",BigDecimal.ONE))))));
 
         executeAndCompare(rightRequest,rightResponse);
     }

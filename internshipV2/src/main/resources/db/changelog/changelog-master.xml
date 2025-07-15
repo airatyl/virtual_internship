@@ -40,35 +40,226 @@
             <column autoIncrement="true" name="id" type="INT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="risk_type_pkey"/>
             </column>
-            <column name="title" type="VARCHAR(50)"/>
+            <column name="title" type="VARCHAR(100)"/>
             <column name="description" type="VARCHAR(100)"/>
         </createTable>
     </changeSet>
-    <changeSet author = "Airat" id = "12">
-        <sql>
-            insert into risk_type (title)  values  ('Медицинские расходы'),
-                                                   ('Отмена поездки'),
-                                                   ('Утеря или кража багажа'),
-                                                   ('Ответственность перед третьими лицами'),
-                                                   ('Эвакуация и репатриация'),
-                                                   ('Активный отдых');
-            insert into country (title, dayPremium) VALUES ('Россия', 500),
-                                                           ('Латвия',1000),
-                                                           ('Литва',1200),
-                                                           ('Франция',1400),
-                                                           ('Китай',1600);
 
-            insert into ageCoefficient (fromAge, toAge, coefficient) VALUES (0,10,0.5),
-                                                                            (11,17,0.8),
-                                                                            (18,25,1.2),
-                                                                            (26,50,1.3),
-                                                                            (51,80,1.5);
+    <changeSet author = "Airat" id = "20">
+        <createTable tableName="persons">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="first_name" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="person_code" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="birth_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Airat" id="21">
+        <createIndex indexName="ix_unique_persons"
+                     tableName="persons"
+                     unique="true">
+            <column name="first_name"/>
+            <column name="last_name"/>
+            <column name="person_code"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author = "Airat" id = "22">
+        <createTable tableName="agreements">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="date_from" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_to" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="premium" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author = "Airat" id = "23">
+        <createTable tableName="selected_risks">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="agreement_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="risk" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Airat" id="23-xx">
+        <addForeignKeyConstraint baseTableName="selected_risks"
+                                 baseColumnNames="agreement_id"
+                                 constraintName="fk_selected_risks_agreement_id"
+                                 referencedTableName="agreements"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+    <changeSet author="Airat" id="23-xxx">
+        <addForeignKeyConstraint baseTableName="selected_risks"
+                                 baseColumnNames="risk"
+                                 constraintName="fk_selected_risks_risk"
+                                 referencedTableName="risk_type"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet author="Airat" id="24">
+        <createIndex indexName="ix_selected_risks_agreement_id_risk"
+                     tableName="selected_risks"
+                     unique="true">
+            <column name="agreement_id"/>
+            <column name="risk"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author = "Airat" id = "25">
+        <createTable tableName="agreement_persons">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="agreement_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="person_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="medical_risk_limit_level" type="DOUBLE precision">
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Airat" id="26">
+        <createIndex indexName="ix_agreement_person_agreement_id_person_id"
+                     tableName="agreement_persons"
+                     unique="true">
+            <column name="agreement_id"/>
+            <column name="person_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Airat" id="27">
+        <addForeignKeyConstraint baseTableName="agreement_persons"
+                                 baseColumnNames="agreement_id"
+                                 constraintName="fk_agreement_persons_agreement_id"
+                                 referencedTableName="agreements"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet author="Airat" id="28">
+        <addForeignKeyConstraint baseTableName="agreement_persons"
+                                 baseColumnNames="person_id"
+                                 constraintName="fk_agreement_persons_person_id"
+                                 referencedTableName="persons"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet author = "Airat" id = "29">
+        <createTable tableName="agreement_person_risks">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="agreement_person_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="risk" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="premium" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Airat" id="30">
+        <createIndex indexName="ix_agreement_person_risks_person_risk_ic"
+                     tableName="agreement_person_risks"
+                     unique="true">
+            <column name="agreement_person_id"/>
+            <column name="risk"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Airat" id="31">
+        <addForeignKeyConstraint baseTableName="agreement_person_risks"
+                                 baseColumnNames="agreement_person_id"
+                                 constraintName="fk_agreement_person_risks_agreement_person_id"
+                                 referencedTableName="agreement_persons"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+    <changeSet author="Airat" id="32">
+        <addForeignKeyConstraint baseTableName="agreement_person_risks"
+                                 baseColumnNames="risk"
+                                 constraintName="fk_selected_risks_risk"
+                                 referencedTableName="risk_type"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+    <changeSet author = "Airat" id = "33">
+        <addColumn tableName="agreements">
+            <column name="uuid" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Airat" id="34">
+        <createIndex indexName="ix_agreements_uuid"
+                     tableName="agreements"
+                     unique="true">
+            <column name="uuid"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Airat" id="35">
+
+    </changeSet>
+    <changeSet author="Airat" id="12">
+        <sql>
+            insert into risk_type (title)
+            values ('Медицинские расходы'),
+                   ('Отмена поездки'),
+                   ('Утеря или кража багажа'),
+                   ('Ответственность перед третьими лицами'),
+                   ('Эвакуация и репатриация'),
+                   ('Активный отдых');
+            insert into country (title, dayPremium)
+            VALUES ('Россия', 500),
+                   ('Латвия', 1000),
+                   ('Литва', 1200),
+                   ('Франция', 1400),
+                   ('Китай', 1600);
+
+            insert into ageCoefficient (fromAge, toAge, coefficient)
+            VALUES (0, 10, 0.5),
+                   (11, 17, 0.8),
+                   (18, 25, 1.2),
+                   (26, 50, 1.3),
+                   (51, 80, 1.5);
 
             insert into insuranceLimitCoefficient
-                (insuranceLimitFrom, insuranceLimitTo, coefficient) VALUES (0,100000,1),
-                                                                           (100001,150000,1.5),
-                                                                           (150001,200000,2);
+                (insuranceLimitFrom, insuranceLimitTo, coefficient)
+            VALUES (0, 100000, 1),
+                   (100001, 150000, 1.5),
+                   (150001, 200000, 2);
         </sql>
     </changeSet>
+
 
 </databaseChangeLog>

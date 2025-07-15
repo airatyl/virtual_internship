@@ -8,7 +8,7 @@ import org.airat.travel.insurance.core.repositories.CountryRepository;
 import org.airat.travel.insurance.core.repositories.InsuranceLimitCoefficientRepository;
 
 import org.airat.travel.insurance.core.services.DateTimeService;
-import org.airat.travel.insurance.dto.v2.Person;
+import org.airat.travel.insurance.dto.v2.PersonDTO;
 import org.airat.travel.insurance.dto.v2.TravelCalculatePremiumRequestV2;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,7 +39,7 @@ class MedicalRiskCalculatorTest {
 
     TravelCalculatePremiumRequestV2 request= new TravelCalculatePremiumRequestV2();
 
-    Person person =new Person();
+    PersonDTO person =new PersonDTO();
 
 //
 //    BigDecimal countryDefaultDayPremium = BigDecimal.valueOf( countryRepository.findByTitle(request.getCountry()).getDaypremium());
