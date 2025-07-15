@@ -12,7 +12,7 @@
 - Lombok, Immutable Objects
 - Logging, metrics
 - JAR, WAR, Java Web Server, Apache Tomcat
-- # Веб-страница приложения
+# Веб-страница приложения
 <img width="666" height="760" alt="image" src="https://github.com/user-attachments/assets/2e6ca4a8-3d01-44e6-b725-6a89f4bbe1be" />
 <img width="631" height="611" alt="image" src="https://github.com/user-attachments/assets/64871704-f357-431d-ac2b-36e8ba203181" />
 
